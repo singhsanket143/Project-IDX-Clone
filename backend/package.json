@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npx nodemon src/index.js" 
+    "dev": "npx nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,8 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.6",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "uuid4": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
