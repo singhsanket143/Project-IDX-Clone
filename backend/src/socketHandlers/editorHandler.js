@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import { setPermissions } from "../utils/setPermission";
+import { setPermissions } from "../utils/setPermission.js";
 
 export const handleEditorSocketEvents = (socket, editorNamespace) => {
     
