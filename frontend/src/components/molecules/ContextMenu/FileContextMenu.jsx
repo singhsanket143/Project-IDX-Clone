@@ -1,4 +1,4 @@
-import './FileContextMenu.css';
+import './ContextMenu.css';
 
 import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 import { useEditorSocketStore } from '../../../store/editorSocketStore';
@@ -26,20 +26,20 @@ export const FileContextMenu = ({
                 console.log("Mouse left");
                 setIsOpen(false);
             }}
-            className='fileContextOptionsWrapper'
+            className='contextOptionsWrapper'
             style={{
                 left: x,
                 top: y,
             }}
         >
             <button
-                className='fileContextButton'
+                className='contextButton'
                 onClick={handleFileDelete}
             >
                 Delete File
             </button>
             <button
-                className='fileContextButton'
+                className='contextButton'
             >
                 Rename File
             </button>

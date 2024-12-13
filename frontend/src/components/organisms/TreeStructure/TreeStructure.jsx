@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import { TreeNode } from "../../molecules/TreeNode/TreeNode";
 import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 import { FileContextMenu } from "../../molecules/ContextMenu/FileContextMenu";
-
+import { useFolderContextMenuStore } from "../../../store/folderContextMenuStore";
+import { FolderContextMenu } from "../../molecules/ContextMenu/FolderContextMenu";
+import { CreateNewFileModal } from '../../molecules/CreateFileModal/CreateNewFileModal';
 export const TreeStructure = () => {
 
     const {treeStructure, setTreeStructure } = useTreeStructureStore();
@@ -13,6 +15,12 @@ export const TreeStructure = () => {
         x: fileContextX, 
         y: fileContextY } = useFileContextMenuStore();
 
+    const { 
+        folder,
+        isOpen: isFolderContextOpen, 
+        x: folderContextX, 
+        y: folderContextY } = useFolderContextMenuStore();
+    
     useEffect(() => {
         if(treeStructure) {
             console.log("tree:", treeStructure);
@@ -30,6 +38,14 @@ export const TreeStructure = () => {
                 path={file}
             />
         )}
+        {isFolderContextOpen && folderContextX && folderContextY && (
+            <FolderContextMenu  
+                x={folderContextX}
+                y={folderContextY}
+                path={folder}
+            />
+        )}
+            <CreateNewFileModal/>
             <TreeNode
                 fileFolderData={treeStructure}
             />

@@ -27,6 +27,14 @@ export const useEditorSocketStore = create((set) => ({
             projectTreeStructureSetter();
         });
 
+        incomingSocket?.on("createFileSuccess", () => {
+            projectTreeStructureSetter();
+        });
+
+        incomingSocket?.on("deleteFolderSuccess", () => {
+            projectTreeStructureSetter();
+        });
+
         set({
             editorSocket: incomingSocket
         });
