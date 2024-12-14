@@ -15,6 +15,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "directory-tree": "^3.5.2",
+    "dockerode": "^4.0.2",
     "dotenv": "^16.4.6",
     "express": "^4.21.1",
     "socket.io": "^4.8.1",
