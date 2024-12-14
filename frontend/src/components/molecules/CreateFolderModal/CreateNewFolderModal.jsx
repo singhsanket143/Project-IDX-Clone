@@ -4,40 +4,39 @@ import { useState } from 'react';
 import { useEditorSocketStore } from '../../../store/editorSocketStore';
 import { useFolderContextMenuStore } from '../../../store/folderContextMenuStore';
 
-export const CreateNewFileModal = () => {
-  const { isCreateNewFileModalOpen , setIsOpen:setIsCreateFileModalOpen , setCreatedFileName } = useCreateFileOrFolderModal();
-  const [fileName, setFileName] = useState("");
+export const CreateNewFolderModal = () => {
+  const { isCreateNewFolderModalOpen , setIsCreateFolderOpen:setIsCreateFolderModalOpen , setCreatedFolderName } = useCreateFileOrFolderModal();
+  const [folderName, setFolderName] = useState("");
   const { editorSocket } = useEditorSocketStore();
   const { folder } = useFolderContextMenuStore();
 
   
 
   const handleOk = () => {
-    if (fileName) {
-        console.log("Creating file", fileName,folder);
-        editorSocket.emit("createFile", {
-            pathToFileOrFolder: folder+"/"+fileName,
+    if (folderName) {
+        editorSocket.emit("createFolder", {
+            pathToFileOrFolder: folder+"/"+folderName,
         });
-        setCreatedFileName(fileName);
+        setCreatedFolderName(folderName);
     }
-    setIsCreateFileModalOpen(false);
-    setFileName("");
+    setIsCreateFolderModalOpen(false);
+    setFolderName("");
 };
 
 
   const handleCancel = () => {
-    setIsCreateFileModalOpen(false);
-    setFileName("");
+    setIsCreateFolderModalOpen(false);
+    setFolderName("");
   };
 
   return (
     <>
-      <Modal title="Create New File" open={isCreateNewFileModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Create New Folder" open={isCreateNewFolderModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <input 
-            placeholder="Enter file name" 
+            placeholder="Enter folder name" 
             type="text" 
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
+            value={folderName}
+            onChange={(e) => setFolderName(e.target.value)}
             style={{
             width: '100%',
             height: '30px',

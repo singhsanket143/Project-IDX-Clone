@@ -2,7 +2,7 @@ import './ContextMenu.css';
 
 import { useFolderContextMenuStore } from "../../../store/folderContextMenuStore";
 import { useEditorSocketStore } from '../../../store/editorSocketStore';
-import { useCreateFileModal } from '../../../store/createFileModal';
+import { useCreateFileOrFolderModal } from '../../../store/createFileOrFolderModal';
 export const FolderContextMenu = ({
     x,
     y,
@@ -10,7 +10,7 @@ export const FolderContextMenu = ({
 }) => {
     const { setIsOpen } = useFolderContextMenuStore();
     const { editorSocket } = useEditorSocketStore();
-    const { setIsOpen:setIsCreateFileModalOpen } = useCreateFileModal();
+    const { setIsOpen:setIsCreateFileModalOpen  , setIsCreateFolderOpen:setIsCreateFolderModalOpen} = useCreateFileOrFolderModal();
 
     function handleFolderDelete(e) {
         e.preventDefault();
@@ -18,6 +18,11 @@ export const FolderContextMenu = ({
         editorSocket.emit("deleteFolder", {
             pathToFileOrFolder: path
         });
+    }
+
+     function handleFolderCreate(e) {
+        e.preventDefault();
+        setIsCreateFolderModalOpen(true);
     }
 
     function handleFolderRename(e) {
@@ -42,6 +47,12 @@ export const FolderContextMenu = ({
                 top: y,
             }}
         >
+            <button
+                className='contextButton'
+                onClick={handleFolderCreate}
+            >
+                Create Folder
+            </button>
             <button
                 className='contextButton'
                 onClick={handleFolderDelete}
