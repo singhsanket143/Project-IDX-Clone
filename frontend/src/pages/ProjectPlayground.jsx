@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { useTreeStructureStore } from "../store/treeStructureStore";
 import { useEditorSocketStore } from "../store/editorSocketStore";
 import { io } from "socket.io-client";
+import { useUserInputModalStore } from "../store/userInputModalStore";
+import { UserInputModal } from "../components/atoms/Modal/UserInputModal";
 
 export const ProjectPlayground = () => {
 
@@ -14,6 +16,12 @@ export const ProjectPlayground = () => {
     const { setProjectId, projectId } = useTreeStructureStore();
 
     const { setEditorSocket } = useEditorSocketStore();
+    const {
+        isOpen: isUserInputModalOpen, 
+        actionType, 
+        path
+
+    } = useUserInputModalStore()
 
     useEffect(() => {
         if(projectIdFromUrl) {
@@ -32,6 +40,7 @@ export const ProjectPlayground = () => {
     return (
         <>
         <div style={{ display: "flex" }}>
+            {isUserInputModalOpen && <UserInputModal />}
             { projectId && (
                     <div
                         style={{
