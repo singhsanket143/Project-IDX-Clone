@@ -19,7 +19,8 @@
     "dotenv": "^16.4.6",
     "express": "^4.21.1",
     "socket.io": "^4.8.1",
-    "uuid4": "^2.0.3"
+    "uuid4": "^2.0.3",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
