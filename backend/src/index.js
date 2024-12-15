@@ -7,6 +7,10 @@ import { PORT } from './config/serverConfig.js';
 import chokidar from 'chokidar';
 import { handleEditorSocketEvents } from './socketHandlers/editorHandler.js';
 import { handleContainerCreate } from './containers/handleContainerCreate.js';
+import { handleShellCreation } from './containers/handleShellCreation.js';
+import { WebSocketServer } from "ws";
+import querystring from "querystring";
+
 
 const app = express();
 const server = createServer(app);
@@ -63,24 +67,54 @@ editorNamespace.on("connection", (socket) => {
 
 });
 
-const terminalNamespace = io.of('/terminal');
-terminalNamespace.on("connection", (socket) => {
-    console.log("terminal connected");
+// const terminalNamespace = io.of('/terminal');
+// terminalNamespace.on("connection", (socket) => {
+//     console.log("terminal connected");
 
-    let projectId = socket.handshake.query['projectId'];
+//     let projectId = socket.handshake.query['projectId'];
 
-    // socket.on("shell-input", (data) => {
-    //     console.log("input recevied", data);
-    //     terminalNamespace.emit("shell-output", data);
-    // });
+//     // socket.on("shell-input", (data) => {
+//     //     console.log("input recevied", data);
+//     //     terminalNamespace.emit("shell-output", data);
+//     // });
 
-    socket.on("disconnect", () => {
-        console.log("terminal disconnected");
-    });
-    handleContainerCreate(projectId, socket);
-})
+//     socket.on("disconnect", () => {
+//         console.log("terminal disconnected");
+//     });
+//     handleContainerCreate(projectId, socket);
+// });
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(process.cwd())
 });
+
+
+const wsForShell = new WebSocketServer({
+    noServer: true,
+  });
+
+
+  server.on("upgrade", (req, socket, head) => {
+    const isShell = req.url.includes("/terminal");
+  
+    if (!isShell) {
+    //   wsForMonaco.handleUpgrade(req, socket, head, (ws) => {
+    //     wsForMonaco.emit("connection", ws, req);
+    //   });
+    } else {
+        console.log(req.url)
+      const { projectId } = querystring.parse(req.url.split("?")[1]);
+      handleContainerCreate(projectId, wsForShell, req, socket, head);
+    }
+  });
+
+  wsForShell.on("connection", (ws, req, container) => {
+    handleShellCreation(container, ws);
+    ws.on("close", () => {
+      container.remove({ force: true }, (err, data) => {
+        if (err) console.log(err);
+        else console.log(`Killed container ${container.id} with no error`);
+      });
+    });
+  });

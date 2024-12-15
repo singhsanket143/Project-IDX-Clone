@@ -12,7 +12,7 @@ RUN apt update && apt upgrade -y
 RUN apt install nano curl -y 
 
 # Install nodejs
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install -y nodejs
 
 # configuring terminal to display current working directory
 RUN echo "PS1='\w '" >> /home/sandbox/.bashrc
