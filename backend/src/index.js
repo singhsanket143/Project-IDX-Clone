@@ -7,6 +7,7 @@ import { PORT } from './config/serverConfig.js';
 import chokidar from 'chokidar';
 import { handleEditorSocketEvents } from './socketHandlers/editorHandler.js';
 
+
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
@@ -54,14 +55,9 @@ editorNamespace.on("connection", (socket) => {
 
     handleEditorSocketEvents(socket, editorNamespace);
 
-    // socket.on("disconnect", async () => {
-    //     await watcher.close();
-    //     console.log("editor disconnected");
-
-    // });
-
 });
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log(process.cwd())
 });
