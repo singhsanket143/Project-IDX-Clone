@@ -45,69 +45,61 @@ export const ProjectPlayground = () => {
     }, [setProjectId, projectIdFromUrl, setEditorSocket, setTerminalSocket]);
 
     return (
-        <>
-        <div style={{ display: "flex" }}>
-            { projectId && (
-                    <div
-                        style={{
-                            backgroundColor: "#333254",
-                            paddingRight: "10px",
-                            paddingTop: "0.3vh",
-                            minWidth: "250px",
-                            maxWidth: "25%",
-                            height: "100vh",
-                            overflow: "auto"
-                        }}
-                    >
-                        <TreeStructure />
-                    </div>
+        <div style={{ width: "100vw", height: "100vh" }}>
+            <Allotment>
+                {projectId && (
+                    <Allotment.Pane minSize={250} maxSize={400} preferredSize={300}>
+                        <div
+                            style={{
+                                backgroundColor: "#333254",
+                                padding: "10px",
+                                height: "100%",
+                                overflow: "auto",
+                            }}
+                        >
+                            <TreeStructure />
+                        </div>
+                    </Allotment.Pane>
                 )}
-            <div
-                style={{
-                    width: "100vw",
-                    height: "100vh"
-                }}
-            >
-                <Allotment>
-                    <div
+
+                {/* Main Content: Editor + Terminal */}
+                <Allotment.Pane minSize={300} >
+                    <div  
                         style={{
                             display: "flex",
                             flexDirection: "column",
                             width: "100%",
                             height: "100%",
                             backgroundColor: "#282a36"
-
                         }}
                     >
-
-                    <Allotment
-                        vertical={true}
-                    >
-                        <EditorComponent />
-                        {/* <Divider style={{color: 'white', backgroundColor: '#333254'}} plain>Terminal</Divider> */}
-                        <BrowserTerminal />
-                    </Allotment>
-                        
-                       
-                        
+                        <Allotment vertical={true}>
+                            <EditorComponent />
+                            <BrowserTerminal />
+                        </Allotment>
                     </div>
-                    <div>
+                </Allotment.Pane>
+
+                
+                <Allotment.Pane preferredSize={400}>
+                    <div
+                        style={{
+                            padding: "10px",
+                            height: "100%"
+                        }}
+                    >
                         <Button
+                            style={{ marginBottom: "10px" }}
                             onClick={() => setLoadBrowser(true)}
                         >
                             Load my browser
                         </Button>
-                        { loadBrowser && projectIdFromUrl && terminalSocket && <Browser projectId={projectIdFromUrl} />}
+                        {loadBrowser && projectIdFromUrl && terminalSocket && (
+                            <Browser projectId={projectIdFromUrl} />
+                        )}
                     </div>
-                </Allotment>
-
-            </div>
+                </Allotment.Pane>
+            </Allotment>
         </div>
-           
-            {/* <EditorButton isActive={false} /> 
-            <EditorButton isActive={true}/>  */}
-            
-            
-        </>
     )
 }
