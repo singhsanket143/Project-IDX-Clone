@@ -1,6 +1,6 @@
 import uuid4 from "uuid4";
 import fs from 'fs/promises';
-import { REACT_PROJECT_COMMAND } from '../config/serverConfig.js';
+import { envObj} from '../config/serverConfig.js';
 import { execPromisified } from "../utils/execUtility.js";
 import path from 'path';
 import directoryTree from "directory-tree";
@@ -14,7 +14,7 @@ export const createProjectService = async () => {
     await fs.mkdir(`./projects/${projectId}`);
 
     // After this call the npm creaste vite command in the newly created project folder
-
+    const REACT_PROJECT_COMMAND = String(envObj.REACT_PROJECT_COMMAND);
     const response = await execPromisified(REACT_PROJECT_COMMAND, {
         cwd: `./projects/${projectId}`
     });

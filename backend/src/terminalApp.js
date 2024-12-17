@@ -4,19 +4,20 @@ import { createServer } from 'node:http';
 import { handleContainerCreate, listContainer } from './containers/handleContainerCreate.js';
 import { WebSocketServer } from 'ws';
 import { handleTerminalCreation } from './containers/handleTerminalCreation.js';
+import { envObj } from './config/serverConfig.js';
 
 
 const app = express();
 const server = createServer(app);
-
+const PORT = Number(envObj.TERMINAL_SERVER_PORT) 
 
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
 
 
-server.listen(4000, () => {
-    console.log(`Server is running on port ${4000}`);
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
     console.log(process.cwd())
 });
 

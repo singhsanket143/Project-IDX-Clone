@@ -20,7 +20,8 @@
     "express": "^4.21.1",
     "socket.io": "^4.8.1",
     "uuid4": "^2.0.3",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

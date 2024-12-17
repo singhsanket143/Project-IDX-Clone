@@ -3,7 +3,7 @@ import cors from 'cors';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import apiRouter from './routes/index.js';
-import { PORT } from './config/serverConfig.js';
+import { envObj} from './config/serverConfig.js';
 import chokidar from 'chokidar';
 import { handleEditorSocketEvents } from './socketHandlers/editorHandler.js';
 
@@ -16,6 +16,8 @@ const io = new Server(server, {
         method: ['GET', 'POST'],
     }
 });
+
+const PORT = Number(envObj.MAIN_PORT)
 
 
 app.use(express.json());
