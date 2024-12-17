@@ -11,6 +11,7 @@ import { Browser } from "../components/organisms/Browser/Browser";
 import { Button } from "antd";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { getEnvObj } from "../config/getEnvObj";
 export const ProjectPlayground = () => {
 
     const {projectId: projectIdFromUrl } = useParams();
@@ -26,14 +27,14 @@ export const ProjectPlayground = () => {
         if(projectIdFromUrl) {
             setProjectId(projectIdFromUrl);
         
-            const editorSocketConn = io(`${import.meta.env.VITE_BACKEND_URL}/editor`, {
+            const editorSocketConn = io(`${getEnvObj.BACKEND_URL}/editor`, {
                 query: {
                     projectId: projectIdFromUrl
                 }
             });
 
             try {
-                const ws = new WebSocket("ws://localhost:4000/terminal?projectId="+projectIdFromUrl);
+                const ws = new WebSocket(`${getEnvObj.TERMINAL_BACKEND_URL}/terminal?projectId=${projectIdFromUrl}`)
                 setTerminalSocket(ws);
                 
             } catch(error) {
