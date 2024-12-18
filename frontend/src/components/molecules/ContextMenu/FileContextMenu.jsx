@@ -2,6 +2,7 @@ import './ContextMenu.css';
 
 import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 import { useEditorSocketStore } from '../../../store/editorSocketStore';
+import { useRenameFileOrFolderModal } from '../../../store/renameFileFolderStore';
 
 export const FileContextMenu = ({
     x,
@@ -11,6 +12,7 @@ export const FileContextMenu = ({
     const { setIsOpen } = useFileContextMenuStore();
 
     const { editorSocket } = useEditorSocketStore();
+     const {  setRenameModalOpen , setNameToBeRenamed , setIsFileorFolder, setOldPath , setNewPath} = useRenameFileOrFolderModal();
 
     function handleFileDelete(e) {
         e.preventDefault();
@@ -18,6 +20,17 @@ export const FileContextMenu = ({
         editorSocket.emit("deleteFile", {
             pathToFileOrFolder: path
         });
+    }
+
+    
+    function handleFileRename(e) {
+        e.preventDefault();
+        const nameToBeRenamed = path.split('/').pop();
+        setOldPath(path);
+        setNameToBeRenamed(nameToBeRenamed);
+        setIsFileorFolder("file");
+        setRenameModalOpen(true);
+        console.log("Renaming file at", path);
     }
 
     return (
@@ -40,6 +53,7 @@ export const FileContextMenu = ({
             </button>
             <button
                 className='contextButton'
+                onClick={handleFileRename}
             >
                 Rename File
             </button>

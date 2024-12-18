@@ -109,6 +109,34 @@ export const handleEditorSocketEvents = (socket, editorNamespace) => {
         }
     });
 
+    socket.on("renameFolder", async ({ oldPath, newPath }) => {
+        try {
+            const response = await fs.rename(oldPath, newPath);
+            socket.emit("renameFolderSuccess", {
+                data: "Folder renamed successfully",
+            });
+        } catch(error) {
+            console.log("Error renaming the folder", error);
+            socket.emit("error", {
+                data: "Error renaming the folder",
+            });
+        }
+    })
+    
+    socket.on("renameFile", async ({ oldPath, newPath }) => { 
+        try {
+            const response = await fs.rename(oldPath, newPath);
+            socket.emit("renameFileSuccess", {
+                data: "File renamed successfully",
+            });
+        } catch(error) {
+            console.log("Error renaming the file", error);
+            socket.emit("error", {
+                data: "Error renaming the file",
+            });
+        }
+    })
+
     socket.on("getPort", async ({ containerName }) => {
         const port = await getContainerPort(containerName);
         console.log("port data", port);

@@ -3,6 +3,7 @@ import './ContextMenu.css';
 import { useFolderContextMenuStore } from "../../../store/folderContextMenuStore";
 import { useEditorSocketStore } from '../../../store/editorSocketStore';
 import { useCreateFileOrFolderModal } from '../../../store/createFileOrFolderModal';
+import { useRenameFileOrFolderModal } from '../../../store/renameFileFolderStore';
 export const FolderContextMenu = ({
     x,
     y,
@@ -10,7 +11,8 @@ export const FolderContextMenu = ({
 }) => {
     const { setIsOpen } = useFolderContextMenuStore();
     const { editorSocket } = useEditorSocketStore();
-    const { setIsOpen:setIsCreateFileModalOpen  , setIsCreateFolderOpen:setIsCreateFolderModalOpen} = useCreateFileOrFolderModal();
+    const { setIsOpen: setIsCreateFileModalOpen, setIsCreateFolderOpen: setIsCreateFolderModalOpen } = useCreateFileOrFolderModal();
+    const {  setRenameModalOpen , setNameToBeRenamed , setIsFileorFolder, setOldPath , setNewPath} = useRenameFileOrFolderModal();
 
     function handleFolderDelete(e) {
         e.preventDefault();
@@ -27,6 +29,11 @@ export const FolderContextMenu = ({
 
     function handleFolderRename(e) {
         e.preventDefault();
+        const nameToBeRenamed = path.split('/').pop();
+        setOldPath(path);
+        setNameToBeRenamed(nameToBeRenamed);
+        setIsFileorFolder("folder");
+        setRenameModalOpen(true);
         console.log("Renaming folder at", path);
     }
 

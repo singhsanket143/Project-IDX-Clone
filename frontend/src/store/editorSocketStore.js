@@ -40,6 +40,14 @@ export const useEditorSocketStore = create((set) => ({
             projectTreeStructureSetter();
         });
 
+        incomingSocket?.on("renameFolderSuccess", () => {
+            projectTreeStructureSetter();
+        });
+
+        incomingSocket?.on("renameFileSuccess", () => {
+            projectTreeStructureSetter();
+         })
+
         incomingSocket?.on("getPortSuccess", ({ port }) => {
             console.log("port data", port);
             portSetter(port);
