@@ -11,6 +11,7 @@ import { Browser } from "../components/organisms/Browser/Browser";
 import { Button } from "antd";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { useActiveFileTabStore } from "../store/activeFileTabStore";
 export const ProjectPlayground = () => {
 
     const {projectId: projectIdFromUrl } = useParams();
@@ -22,13 +23,16 @@ export const ProjectPlayground = () => {
 
     const [loadBrowser, setLoadBrowser] = useState(false);
 
+    const { activeFileTab  } = useActiveFileTabStore();
+
     useEffect(() => {
         if(projectIdFromUrl) {
             setProjectId(projectIdFromUrl);
         
             const editorSocketConn = io(`${import.meta.env.VITE_BACKEND_URL}/editor`, {
                 query: {
-                    projectId: projectIdFromUrl
+                    projectId: projectIdFromUrl,
+                    activeFileTab: activeFileTab?.path
                 }
             });
 
@@ -42,7 +46,7 @@ export const ProjectPlayground = () => {
             setEditorSocket(editorSocketConn);
         }
         
-    }, [setProjectId, projectIdFromUrl, setEditorSocket, setTerminalSocket]);
+    }, [setProjectId, projectIdFromUrl, setEditorSocket, setTerminalSocket,activeFileTab]);
 
     return (
         <>

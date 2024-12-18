@@ -1,11 +1,11 @@
 import fs from "fs/promises";
 import { getContainerPort } from "../containers/handleContainerCreate.js";
 
-export const handleEditorSocketEvents = (socket, editorNamespace) => {
+export const handleEditorSocketEvents = (socket, editorNamespace,roomName) => {
     socket.on("writeFile", async ({ data, pathToFileOrFolder }) => {
         try {
             const response = await fs.writeFile(pathToFileOrFolder, data);
-            editorNamespace.emit("writeFileSuccess", {
+            editorNamespace.to(roomName).emit("writeFileSuccess", {
                 data: "File written successfully",
                 path: pathToFileOrFolder,
             })

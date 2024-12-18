@@ -35,6 +35,11 @@ editorNamespace.on("connection", (socket) => {
 
     // somehow we will get the projectId from frontend;
     let projectId = socket.handshake.query['projectId'];
+    let activeFileTab = socket.handshake.query['activeFileTab'];
+
+    const roomName = `${projectId}_${activeFileTab}`;
+
+    socket.join(roomName);
 
     console.log("Project id received after connection", projectId);
 
@@ -53,7 +58,7 @@ editorNamespace.on("connection", (socket) => {
         });
     }
 
-    handleEditorSocketEvents(socket, editorNamespace);
+    handleEditorSocketEvents(socket, editorNamespace,roomName);
 
 });
 
