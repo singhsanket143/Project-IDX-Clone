@@ -19,9 +19,9 @@ export const useEditorSocketStore = create((set) => ({
 
         incomingSocket?.on("writeFileSuccess", (data) => {
             console.log("Write file success", data);
-            // incomingSocket.emit("readFile", {
-            //     pathToFileOrFolder: data.path
-            // })
+            incomingSocket.emit("readFile", {
+                pathToFileOrFolder: data.path
+            })
         });
 
         incomingSocket?.on("deleteFileSuccess", () => {
