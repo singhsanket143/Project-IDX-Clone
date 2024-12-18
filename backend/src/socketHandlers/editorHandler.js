@@ -19,12 +19,22 @@ export const handleEditorSocketEvents = (socket, editorNamespace) => {
 
 
     socket.on("createFile", async ({ pathToFileOrFolder }) => {
-        const isFileAlreadyPresent = await fs.stat(pathToFileOrFolder);
-        if(isFileAlreadyPresent) {
-            socket.emit("error", {
-                data: "File already exists",
-            });
-            return;
+        try {
+            const isFileAlreadyPresent = await fs.stat(pathToFileOrFolder);
+            if(isFileAlreadyPresent) {
+                socket.emit("error", {
+                    data: "File already exists",
+                });
+                return;
+            }
+        } catch (err) {
+            if (err.code !== "ENOENT") {
+                console.log("Error checking file existence:", err);
+                socket.emit("error", {
+                    data: "Error checking file existence",
+                });
+                return;
+            }
         }
 
         try {
@@ -98,6 +108,34 @@ export const handleEditorSocketEvents = (socket, editorNamespace) => {
             });
         }
     });
+
+    socket.on("renameFolder", async ({ oldPath, newPath }) => {
+        try {
+            const response = await fs.rename(oldPath, newPath);
+            socket.emit("renameFolderSuccess", {
+                data: "Folder renamed successfully",
+            });
+        } catch(error) {
+            console.log("Error renaming the folder", error);
+            socket.emit("error", {
+                data: "Error renaming the folder",
+            });
+        }
+    })
+    
+    socket.on("renameFile", async ({ oldPath, newPath }) => { 
+        try {
+            const response = await fs.rename(oldPath, newPath);
+            socket.emit("renameFileSuccess", {
+                data: "File renamed successfully",
+            });
+        } catch(error) {
+            console.log("Error renaming the file", error);
+            socket.emit("error", {
+                data: "Error renaming the file",
+            });
+        }
+    })
 
     socket.on("getPort", async ({ containerName }) => {
         const port = await getContainerPort(containerName);

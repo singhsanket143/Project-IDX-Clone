@@ -1,7 +1,8 @@
-import './FileContextMenu.css';
+import './ContextMenu.css';
 
 import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 import { useEditorSocketStore } from '../../../store/editorSocketStore';
+import { useRenameFileOrFolderModal } from '../../../store/renameFileFolderStore';
 
 export const FileContextMenu = ({
     x,
@@ -11,6 +12,7 @@ export const FileContextMenu = ({
     const { setIsOpen } = useFileContextMenuStore();
 
     const { editorSocket } = useEditorSocketStore();
+     const {  setRenameModalOpen , setNameToBeRenamed , setIsFileorFolder, setOldPath , setNewPath} = useRenameFileOrFolderModal();
 
     function handleFileDelete(e) {
         e.preventDefault();
@@ -20,26 +22,38 @@ export const FileContextMenu = ({
         });
     }
 
+    
+    function handleFileRename(e) {
+        e.preventDefault();
+        const nameToBeRenamed = path.split('/').pop();
+        setOldPath(path);
+        setNameToBeRenamed(nameToBeRenamed);
+        setIsFileorFolder("file");
+        setRenameModalOpen(true);
+        console.log("Renaming file at", path);
+    }
+
     return (
         <div
             onMouseLeave={() => {
                 console.log("Mouse left");
                 setIsOpen(false);
             }}
-            className='fileContextOptionsWrapper'
+            className='contextOptionsWrapper'
             style={{
                 left: x,
                 top: y,
             }}
         >
             <button
-                className='fileContextButton'
+                className='contextButton'
                 onClick={handleFileDelete}
             >
                 Delete File
             </button>
             <button
-                className='fileContextButton'
+                className='contextButton'
+                onClick={handleFileRename}
             >
                 Rename File
             </button>
