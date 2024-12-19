@@ -22,6 +22,30 @@ export const createProjectService = async () => {
     return projectId;
 }
 
+export const getAllProjectsService = async () => {
+    const projectsFolder = path.resolve("./projects");
+    try {
+      const files = await fs.readdir(projectsFolder);
+      const directories = await Promise.all(
+        files.map(async (file) => {
+          const fullPath = path.join(projectsFolder, file);
+          try {
+            const stat = await fs.stat(fullPath);
+            return stat.isDirectory() ? file : null;
+          } catch (error) {
+            console.error(`Error getting stats for file ${file}:`, error);
+            return null;
+          }
+        })
+      );
+  
+      return directories.filter(Boolean);
+    } catch (error) {
+      console.error("Error reading projects directory:", error);
+      throw new Error("Unable to retrieve projects.");
+    }
+  };
+  
 export const getProjectTreeService = async (projectId) => {
     const projectPath = path.resolve(`./projects/${projectId}`);
     const tree = directoryTree(projectPath);
