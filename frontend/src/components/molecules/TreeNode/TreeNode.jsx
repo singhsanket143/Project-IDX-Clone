@@ -3,6 +3,7 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { FileIcon } from "../../atoms/FileIcon/Fileicon";
 import { useEditorSocketStore } from "../../../store/editorSocketStore";
 import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
+import { useActiveFileTabStore } from "../../../store/activeFileTabStore";
 
 export const TreeNode = ({
     fileFolderData
@@ -11,6 +12,8 @@ export const TreeNode = ({
     const [visibility, setVisibility] = useState({});
 
     const { editorSocket } = useEditorSocketStore();
+
+    const {setActiveFileTab} = useActiveFileTabStore();
 
     const {
         setFile,
@@ -37,6 +40,8 @@ export const TreeNode = ({
         editorSocket.emit("readFile", {
             pathToFileOrFolder: fileFolderData.path
         })
+        console.log(fileFolderData);
+        setActiveFileTab(fileFolderData.path, "", fileFolderData.name.split(".").pop());
     }
 
     function handleContextMenuForFiles(e, path) {

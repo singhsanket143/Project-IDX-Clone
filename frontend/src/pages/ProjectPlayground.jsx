@@ -11,6 +11,7 @@ import { Browser } from "../components/organisms/Browser/Browser";
 import { Button } from "antd";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { TabContainer } from "../components/molecules/TabContainer/TabsContainer";
 export const ProjectPlayground = () => {
 
     const {projectId: projectIdFromUrl } = useParams();
@@ -79,7 +80,7 @@ export const ProjectPlayground = () => {
 
                         }}
                     >
-
+                    <TabContainer />
                     <Allotment
                         vertical={true}
                     >
@@ -102,12 +103,7 @@ export const ProjectPlayground = () => {
                 </Allotment>
 
             </div>
-        </div>
-           
-            {/* <EditorButton isActive={false} /> 
-            <EditorButton isActive={true}/>  */}
-            
-            
+        </div> 
         </>
     )
 }
