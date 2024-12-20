@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom"
-import { CreateProject } from "./pages/CreateProject"
 import { ProjectPlayground } from "./pages/ProjectPlayground"
+import LandingPage from "./pages/LandingPage"
 
 export const Router = () => {
     return (
         <Routes>
-            <Route path="/" element={<CreateProject />} />
+            <Route path="/" element = {<LandingPage />} />
             <Route path="/project/:projectId" element={<ProjectPlayground />} />
         </Routes>
     )
