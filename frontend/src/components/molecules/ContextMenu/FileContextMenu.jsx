@@ -1,49 +1,48 @@
-import './FileContextMenu.css';
+import "./FileContextMenu.css";
 
 import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
-import { useEditorSocketStore } from '../../../store/editorSocketStore';
+import { useEditorSocketStore } from "../../../store/editorSocketStore";
 
-export const FileContextMenu = ({
-    x,
-    y,
-    path
-}) => {
-    const { setIsOpen } = useFileContextMenuStore();
+export const FileContextMenu = ({ x, y, path }) => {
+  const { setIsOpen } = useFileContextMenuStore();
 
-    const { editorSocket } = useEditorSocketStore();
+  const { editorSocket } = useEditorSocketStore();
 
-    function handleFileDelete(e) {
-        e.preventDefault();
-        console.log("Deleting file at", path);
-        editorSocket.emit("deleteFile", {
-            pathToFileOrFolder: path
-        });
-    }
+  function handleFileDelete(e) {
+    e.preventDefault();
+    console.log("Deleting file at", path);
+    editorSocket.emit("deleteFile", {
+      pathToFileOrFolder: path,
+    });
+  }
 
-    return (
-        <div
-            onMouseLeave={() => {
-                console.log("Mouse left");
-                setIsOpen(false);
-            }}
-            className='fileContextOptionsWrapper'
-            style={{
-                left: x,
-                top: y,
-            }}
-        >
-            <button
-                className='fileContextButton'
-                onClick={handleFileDelete}
-            >
-                Delete File
-            </button>
-            <button
-                className='fileContextButton'
-            >
-                Rename File
-            </button>
+  function handleFileDownload(e) {
+    e.preventDefault();
+    console.log("downloading file at", path);
+    editorSocket.emit("downloadFile", {
+      pathToFileOrFolder: path,
+    });
+  }
 
-        </div>
-    )
-}
+  return (
+    <div
+      onMouseLeave={() => {
+        console.log("Mouse left");
+        setIsOpen(false);
+      }}
+      className="fileContextOptionsWrapper"
+      style={{
+        left: x,
+        top: y,
+      }}
+    >
+      <button className="fileContextButton" onClick={handleFileDelete}>
+        Delete File
+      </button>
+      <button className="fileContextButton">Rename File</button>
+      <button className="fileContextButton " onClick={handleFileDownload}>
+        Download File
+      </button>
+    </div>
+  );
+};
