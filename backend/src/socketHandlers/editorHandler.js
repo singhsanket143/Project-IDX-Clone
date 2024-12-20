@@ -57,6 +57,22 @@ export const handleEditorSocketEvents = (socket, editorNamespace) => {
         }
     });
 
+    socket.on("downloadFile", async ({ pathToFileOrFolder }) => {
+        try {
+          const fileData = await fs.readFile(pathToFileOrFolder);
+          console.log("downlaodFile");
+          socket.emit("downloadFileSuccess", {
+            data: fileData.toString(),
+            path: pathToFileOrFolder,
+          });
+        } catch (error) {
+          console.log("Error downloading the file", error);
+          socket.emit("error", {
+            data: "Error downloading the file",
+          });
+        }
+      });
+
     socket.on("deleteFile", async ({ pathToFileOrFolder }) => {
         try {
             const response = await fs.unlink(pathToFileOrFolder);

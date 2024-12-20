@@ -24,6 +24,33 @@ export const useEditorSocketStore = create((set) => ({
             // })
         });
 
+        incomingSocket?.on("downloadFileSuccess", (data) => {
+            console.log("Download file success", data);
+      
+            const { data: fileContent, path: filePath } = data;
+      
+            const fileName = filePath.split(/[/\\]/).pop();
+      
+            console.log("File Name:", fileName);
+      
+            // Create a Blob from the file content
+            const fileBlob = new Blob([fileContent], {
+              type: "application/octet-stream",
+            });
+      
+            // Create a link element to trigger the download
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(fileBlob);
+      
+            link.href = url;
+            link.download = fileName;
+      
+            link.click();
+      
+            // Clean up and revoke the object URL
+            URL.revokeObjectURL(url);
+          });
+
         incomingSocket?.on("deleteFileSuccess", () => {
             projectTreeStructureSetter();
         });
